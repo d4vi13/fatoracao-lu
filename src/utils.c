@@ -4,6 +4,8 @@
 
 #include "utils.h"
 
+#include "common.h"
+
 /*  Retorna tempo em milisegundos desde EPOCH
 
     Forma de uso:
