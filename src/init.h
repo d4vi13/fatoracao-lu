@@ -6,6 +6,7 @@
 
 void init_LU(pLU ls);
 
-void read_matriz
+void read_matrix(double **m, int order);
+
 
 #endif
