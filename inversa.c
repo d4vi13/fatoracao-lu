@@ -9,18 +9,19 @@ int main(){
     double tempo;
     LU ls;
    
-    likwid_markerInit();
+    LIKWID_MARKER_INIT;
 
     init_LU(&ls);
-
+    printf("/begin-output\n");
     printf("%d\n", ls.order);
 
-
-    likwid_markerStartRegion("Calculo da inversa");
+    LIKWID_MARKER_START("likwid");
     tempo = timestamp();
     find_inverse(&ls);
     tempo = timestamp() - tempo;
-    likwid_markerStopRegion("Calculo da inversa");
+    LIKWID_MARKER_STOP("likwid");
+
+    LIKWID_MARKER_CLOSE;
 
     calculate_error(&ls);
 
@@ -28,6 +29,7 @@ int main(){
     printf("%.15e\n",ls.error);
     printf("%.8e\n", tempo);
 
+    printf("/end-output\n");
     free_dependencies(&ls); 
     return 0;
 }
