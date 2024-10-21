@@ -10,7 +10,7 @@
     LFLAGS = -llikwid -lm
 
 # Lista de arquivos para distribuição. Acrescentar mais arquivos se necessário.
-DISTFILES = *.c *.h LEIAME* Makefile
+DISTFILES = *.c *.h LEIAME Makefile
 DISTDIR = `basename ${PWD}`
 
 .PHONY: all clean purge dist
