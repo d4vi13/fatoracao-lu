@@ -3,7 +3,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <fenv.h>
+#include <math.h>
+#include <likwid.h>
 
 struct LU{
 
@@ -23,6 +25,7 @@ struct LU{
     double error;
 
     double** solution; 
+    double** original; 
 };
 
 typedef struct LU LU, *pLU;

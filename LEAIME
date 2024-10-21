@@ -1,0 +1,142 @@
+# LEIAME - Projeto de Fatoração LU
+
+## Informações Gerais
+
+- **Nome**: Davi Campos Ribeiro 
+- **GRR**: 20232378
+
+## Descrição do Projeto
+
+Este projeto realiza a fatoração LU de uma matriz quadrada de ordem `n` utilizando pivotamento parcial, resolve sistemas lineares, e calcula a inversa de uma matriz. A estrutura do código está dividida em quatro arquivos: `init.c`, `calc.c`, `main.c` e `utils.c`, cada um com suas respectivas funções e responsabilidades.
+
+## Arquivos e Suas Responsabilidades
+
+1. **`init.c`**: Responsável por alocar e inicializar as estruturas de dados necessárias para a fatoração LU.
+2. **`calc.c`**: Contém as funções de fatoração LU, resolução do sistema linear e cálculo da inversa.
+3. **`main.c`**: Função principal que coordena a execução do algoritmo.
+4. **`utils.c`**: Funções utilitárias, como leitura e impressão de matrizes, e manipulação básica de dados.
+
+## Estruturas de Dados
+
+### Estrutura `LU` (`common.h`)
+
+```c
+struct LU {
+    union {
+        double** L;
+        double** U;
+        double** coeficientes;
+    };
+    double* Y;  // Vetor intermediário para resolução do sistema Ly = B
+    double* X;  // Vetor de solução final do sistema Ux = Y
+    double* B;  // Vetor de termos independentes
+    int* access_mask;  // Máscara de acesso para rastrear a ordem de pivotamento
+    int order;  // Ordem da matriz quadrada
+    double error;  // Erro calculado após encontrar a inversa
+    double** solution;  // Matriz inversa da matriz original
+    double** original;  // Cópia da matriz original para cálculo de erro
+};
+```
+
+- **Descrição**: A estrutura `LU` armazena as matrizes `L` e `U` (ou `coeficientes`), além dos vetores `Y` e `X` necessários para a resolução dos sistemas lineares. `access_mask` permite ajustar o acesso a linhas após pivotamento, e `solution` armazena a matriz inversa. `original` é usado para verificar a precisão da inversa.
+
+## Funções
+
+### Arquivo: `init.c`
+
+- **`void malloc_dependencies(pLU ls)`**  
+    Aloca memória para todas as estruturas de `ls`.
+    - `pLU ls`: Ponteiro para a estrutura `LU`.
+
+- **`void free_dependencies(pLU ls)`**  
+    Libera a memória alocada para as estruturas de `ls`.
+    - `pLU ls`: Ponteiro para a estrutura `LU`.
+
+- **`void init_LU(pLU ls)`**  
+    Inicializa o sistema `LU` com leitura da matriz e preparação para a fatoração.
+    - `pLU ls`: Ponteiro para a estrutura `LU`.
+
+### Arquivo: `calc.c`
+
+- **`void partial_pivoting(double **A, int i, int order, int *mask)`**  
+    Realiza o pivotamento parcial na matriz `A` para a coluna `i`.
+    - `double **A`: Matriz de coeficientes.
+    - `int i`: Índice da coluna a ser pivotada.
+    - `int order`: Ordem da matriz.
+    - `int *mask`: Máscara de acesso das linhas.
+
+- **`void fatoracaoLU(double **A, int order, int *mask)`**  
+    Realiza a fatoração LU com pivotamento parcial.
+    - `double **A`: Matriz de coeficientes.
+    - `int order`: Ordem da matriz.
+    - `int *mask`: Máscara de acesso das linhas.
+
+- **`void resolveSL(pLU ls)`**  
+    Resolve o sistema linear usando as matrizes `L` e `U` armazenadas em `ls`.
+    - `pLU ls`: Ponteiro para a estrutura `LU`.
+
+- **`void find_inverse(pLU ls)`**  
+    Calcula a inversa de uma matriz usando a fatoração LU.
+    - `pLU ls`: Ponteiro para a estrutura `LU`.
+
+- **`double normaL2(double** A, int n, int line)`**  
+    Calcula a norma L2 da linha `line` da matriz `A`.
+    - `double **A`: Matriz.
+    - `int n`: Ordem da matriz.
+    - `int line`: Índice da coluna.
+
+- **`void calculate_error(pLU ls)`**  
+    Calcula o erro médio da inversa ao comparar `A * A^-1` com a matriz identidade.
+    - `pLU ls`: Ponteiro para a estrutura `LU`.
+
+### Arquivo: `utils.c`
+
+- **`void read_matrix(double **m, int order)`**  
+    Lê uma matriz de ordem `order` a partir da entrada padrão.
+    - `double **m`: Matriz a ser lida.
+    - `int order`: Ordem da matriz.
+
+- **`void print_matrix(double **m, int order)`**  
+    Imprime uma matriz de ordem `order`.
+    - `double **m`: Matriz a ser impressa.
+    - `int order`: Ordem da matriz.
+
+- **`double** malloc_matrix(int order)`**  
+    Aloca memória para uma matriz de ordem `order`.
+    - `int order`: Ordem da matriz.
+    - **Retorno**: Ponteiro para a matriz alocada.
+
+- **`void free_matrix(double **m, int order)`**  
+    Libera a memória de uma matriz de ordem `order`.
+    - `double **m`: Matriz a ser liberada.
+    - `int order`: Ordem da matriz.
+
+- **`void copy_matrix(int n, double** source, double** destination)`**  
+    Copia a matriz `source` para `destination`.
+    - `int n`: Ordem da matriz.
+    - `double **source`: Matriz fonte.
+    - `double **destination`: Matriz destino.
+
+- **`void multiply_matrices(int n, double** A, double** B)`**  
+    Multiplica duas matrizes `A` e `B`, armazenando o resultado em `A`.
+    - `int n`: Ordem das matrizes.
+    - `double **A`: Primeira matriz e matriz resultado.
+    - `double **B`: Segunda matriz.
+
+- **`void subtract_identity(int n, double** A)`**  
+    Subtrai a matriz identidade de `A`.
+    - `int n`: Ordem da matriz.
+    - `double **A`: Matriz.
+
+
+### Explicação do Algoritmo
+
+O algoritmo de fatoração LU decompõe uma matriz `A` em duas matrizes `L` (inferior) e `U` (superior), neste caso a matriz foi
+mantida em uma só matriz, e o pivoteamento parcial foi abstraido pela mascara de acesso,  permitindo resolver sistemas lineares de forma eficiente.
+ O processo é dividido em:
+- **Pivotamento parcial**: Garante a estabilidade numérica da decomposição escolhendo o maior elemento da coluna como pivô.
+- **Fatoração LU**: Utiliza os pivôs para eliminar elementos abaixo da diagonal principal, formando a matriz `U` e armazenando os multiplicadores em `L`.
+- **Resolução do sistema**: Resolve o sistema `Ly = B` e, em seguida, `Ux = y`, para encontrar a solução `x`.
+
+---
+

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <sys/time.h>
+#include "common.h"
 
 // Valor absoluto de um número. Alternativa ao uso da função 'fabs()'
 #define ABS(num)  ((num) < 0.0 ? -(num) : (num))
@@ -22,6 +23,14 @@ typedef double rtime_t;
 
 // Funções
 rtime_t timestamp(void);
+void read_matrix(double **m, int order);
+void print_matrix(double **m, int order);
+double** malloc_matrix(int order);
+void free_matrix(double **m, int order);
+void copy_matrix(int n, double** source, double** destination);
+void multiply_matrices(int n, double** A, double** B);
+void subtract_identity(int n, double** A);
+void copy_result_to_solution(pLU ls, int column);
 
 #endif // __UTILS_H__
 

@@ -1,13 +1,13 @@
 # PROGRAMA
     PROG = inversa
-    OBJS = main.o mod1.o mod2.o mod3.o utils.o
+    OBJS = inversa.o init.o calc.o utils.o
 
 # Compilador
     CC     = gcc
 
 # Acrescentar onde apropriado as opções para incluir uso da biblioteca LIKWID
     CFLAGS = -O0
-    LFLAGS = -lm
+    LFLAGS = -llikwid -lm
 
 # Lista de arquivos para distribuição. Acrescentar mais arquivos se necessário.
 DISTFILES = *.c *.h LEIAME* Makefile
