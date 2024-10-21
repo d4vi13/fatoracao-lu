@@ -32,5 +32,7 @@ typedef struct LU LU, *pLU;
  
 #define access_m(A, i, j) A[mask[i]][j]
 #define access(A, i ,j) (A)[(A)->access_mask[i]][j]
+#define accessU(ls, i, j) ls->U[ls->access_mask[i]][j]
+#define accessL(ls, i, j) ls->L[ls->access_mask[i]][j]
 #endif
 
