@@ -6,6 +6,7 @@
 
 
 int main(){
+    fesetround(FE_DOWNWARD);
     double tempo;
     LU ls;
    
